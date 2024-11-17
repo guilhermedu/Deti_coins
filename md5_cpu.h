@@ -11,21 +11,58 @@
 
 #ifndef MD5_CPU
 #define MD5_CPU
+#define DEBUG_MODE 1 // Set to 1 to enable debug prints, 0 to disable
+
+#include <string.h>  // For memcpy and memset
+// md5_cpu.c
+#include "debug.h"
+
+volatile int debug_active = 0;
 
 //
 // CPU-only implementation (assumes a little-endian CPU)
 //
 
-static void md5_cpu(u32_t *data,u32_t *hash)
-{ // one message -> one MD5 hash
-  u32_t a,b,c,d,state[4],x[16];
+// md5_cpu.c
+#include "debug.h"
+
+static void md5_cpu(u32_t *data, u32_t *hash) {
+    u32_t a, b, c, d, state[4], x[16];
 # define C(c)         (c)
 # define ROTATE(x,n)  (((x) << (n)) | ((x) >> (32 - (n))))
 # define DATA(idx)    data[idx]
 # define HASH(idx)    hash[idx]
 # define STATE(idx)   state[idx]
 # define X(idx)       x[idx]
-  CUSTOM_MD5_CODE();
+
+    /* debug_active = 1; // Set debug flag
+
+    // Print initial data
+    if (debug_active) {
+        printf("md5_cpu initial data:\n");
+        for (int i = 0; i < 16; i++) {
+            printf("DATA[%d] = %08X\n", i, DATA(i));
+        }
+
+        // Print initial state
+        printf("md5_cpu initial state:\n");
+        for (int i = 0; i < 4; i++) {
+            printf("STATE[%d] = %08X\n", i, STATE(i));
+        }
+    }
+
+    CUSTOM_MD5_CODE();
+
+    // Print final hash
+    if (debug_active) {
+        printf("md5_cpu final hash:\n");
+        for (int i = 0; i < 4; i++) {
+            printf("HASH[%d] = %08X\n", i, HASH(i));
+        }
+    }
+
+    debug_active = 0; // Clear debug flag */
+
 # undef C
 # undef ROTATE
 # undef DATA

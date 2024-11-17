@@ -9,26 +9,52 @@
 // test_md5_cpu_avx() --- test the correctness of md5_cpu() and measure its execution time
 //
 
-#if defined(__GNUC__) && defined(__AVX__)
+//#if defined(__GNUC__) && defined(__AVX__)
 #ifndef MD5_CPU_AVX
 #define MD5_CPU_AVX
-
-//
-// CPU-only implementation using AVX instructions (assumes a little-endian CPU)
-//
+// md5_cpu_avx.c
+#include "debug.h"
 
 typedef int v4si __attribute__ ((vector_size (16)));
 
-static void md5_cpu_avx(v4si *interleaved4_data,v4si *interleaved4_hash)
-{ // four interleaved messages -> four interleaved MD5 hashes
-  v4si a,b,c,d,interleaved4_state[4],interleaved4_x[16];
-# define C(c)         (v4si){ (int)(c),(int)(c),(int)(c),(int)(c) }
+static void md5_cpu_avx(v4si *interleaved4_data, v4si *interleaved4_hash) {
+    v4si a, b, c, d, interleaved4_state[4], interleaved4_x[16];
+# define C(c)         (v4si){ (int)(c), (int)(c), (int)(c), (int)(c) }
 # define ROTATE(x,n)  (__builtin_ia32_pslldi128(x,n) | __builtin_ia32_psrldi128(x,32 - (n)))
 # define DATA(idx)    interleaved4_data[idx]
 # define HASH(idx)    interleaved4_hash[idx]
 # define STATE(idx)   interleaved4_state[idx]
 # define X(idx)       interleaved4_x[idx]
-  CUSTOM_MD5_CODE();
+CUSTOM_MD5_CODE();
+
+    /* // Print initial data for each lane
+    if (debug_active) {
+        printf("md5_cpu_avx initial data:\n");
+        for (int i = 0; i < 16; i++) {
+            printf("DATA[%d] = { %08X, %08X, %08X, %08X }\n", i,
+                   DATA(i)[0], DATA(i)[1], DATA(i)[2], DATA(i)[3]);
+        }
+
+        // Print initial state for each lane
+        printf("md5_cpu_avx initial state:\n");
+        for (int i = 0; i < 4; i++) {
+            printf("STATE[%d] = { %08X, %08X, %08X, %08X }\n", i,
+                   STATE(i)[0], STATE(i)[1], STATE(i)[2], STATE(i)[3]);
+        }
+    }
+
+    CUSTOM_MD5_CODE();
+
+    // Print final hash for each lane
+    if (debug_active) {
+        printf("md5_cpu_avx final hash:\n");
+        for (int i = 0; i < 4; i++) {
+            printf("HASH[%d] = { %08X, %08X, %08X, %08X }\n", i,
+                   HASH(i)[0], HASH(i)[1], HASH(i)[2], HASH(i)[3]);
+        }
+    }
+
+    debug_active = 0; // Clear debug flag */
 # undef C
 # undef ROTATE
 # undef DATA
@@ -98,4 +124,4 @@ static void test_md5_cpu_avx(void)
 }
 
 #endif
-#endif
+//#endif
