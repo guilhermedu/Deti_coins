@@ -19,7 +19,7 @@ OPENCL_DIR = $(CUDA_DIR)
 #   RTX A6000 Ada --------- sm_86
 #   RTX 4070 -------------- sm_89
 #
-CUDA_ARCH = sm_75
+CUDA_ARCH = sm_61
 
 
 #
@@ -59,11 +59,12 @@ deti_coins_apple:	$(SRC) $(H_FILES)
 #
 # compile for Intel/AMD processors with CUDA
 #
-deti_coins_intel_cuda:	$(SRC) $(H_FILES) $(C_FILES) md5_cuda_kernel.cubin
+deti_coins_intel_cuda:	$(SRC) $(H_FILES) $(C_FILES) deti_coins_cuda_kernel_search.cubin
 	cc -Wall -O2 -mavx2 -DUSE_CUDA=1 -I$(CUDA_DIR)/include $(SRC) -o deti_coins_intel_cuda -L$(CUDA_DIR)/lib64 -lcuda
 
 md5_cuda_kernel.cubin:			md5.h md5_cuda_kernel.cu
 	nvcc -arch=$(CUDA_ARCH) --compiler-options -O2,-Wall -I$(CUDA_DIR)/include --cubin md5_cuda_kernel.cu -o md5_cuda_kernel.cubin
 
 deti_coins_cuda_kernel_search.cubin:	md5.h deti_coins_cuda_kernel_search.cu
-	nvcc -arch=$(CUDA_ARCH) --compiler-options -O2,-Wall -I$(CUDA_DIR)/include --cubin deti_coins_cuda_kernel_search.cu -o deti_coins_cuda_kernel_search.cubin
+	nvcc -arch=sm_61 --compiler-options -O2,-Wall -I/usr/local/cuda/include -I. --cubin deti_coins_cuda_kernel_search.cu -o deti_coins_cuda_kernel_search.cubin
+

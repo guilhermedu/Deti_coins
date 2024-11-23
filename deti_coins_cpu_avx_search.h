@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>  // Added for rand(), srand()
-#include <time.h>    // Added for time()
+#include <stdlib.h>  // Para rand(), srand()
+#include <time.h>    // Para time()
 #include <immintrin.h>
 #include "md5_cpu_avx.h"
 #include "cpu_utilities.h"
@@ -15,79 +15,49 @@ typedef uint8_t u08_t;
 
 extern volatile int stop_request;
 
-// Function to generate a random u32_t with printable ASCII characters
-static u32_t random_printable_u32() {
-    u32_t v = 0;
-    for (int i = 0; i < 4; i++) {
-        u08_t c = (rand() % (0x7E - 0x20 + 1)) + 0x20; // Random character between 0x20 and 0x7E
-        v |= ((u32_t)c) << (i * 8);
-    }
-    return v;
+
+static inline u32_t random_printable_u32() {
+    return ((rand() % 95 + 0x20) << 0) |
+           ((rand() % 95 + 0x20) << 8) |
+           ((rand() % 95 + 0x20) << 16) |
+           ((rand() % 95 + 0x20) << 24);
 }
 
 static void deti_coins_cpu_avx_search(uint32_t n_random_words) {
     u64_t n_attempts = 0, n_coins = 0;
     u32_t data[13][4] __attribute__((aligned(32)));
     u32_t hash[4][4];
-    u32_t v1[4], v2[4], v3[4], v4[4], v5[4], v6[4];
-
-
-    // Seed the random number generator
-    srand(time(NULL));
-
-    // Initialize v1 and v2 for each lane with random values
-    for (int i = 0; i < 4; i++) {
-        v1[i] = random_printable_u32();
-        v2[i] = random_printable_u32();
-        v3[i] = random_printable_u32();
-        v4[i] = random_printable_u32();
-        v5[i] = random_printable_u32();
-        v6[i] = random_printable_u32();
-    }
-
-
-    // Initialization of 'data' with static values
-    // First, initialize all data to spaces
-    for (int i = 0; i < 13; i++) {
-        for (int j = 0; j < 4; j++) {
-            data[i][j] = 0x20202020; // Little-endian '    '
-        }
-    }
-
-    // Set the specific initial values
-    for (int j = 0; j < 4; j++) {
-        data[0][j] = 0x49544544; // "DETI" in little-endian
-        data[1][j] = 0x696F6320; // "coi " in little-endian
-        data[2][j] = 0x6E20206E; // "n  n" in little-endian
-        data[3][j] = v1[j];
-        data[4][j] = v2[j];
-        data[5][j] = v3[j];
-        data[6][j] = v4[j];
-        data[7][j] = v5[j];
-        data[8][j] = v6[j];
-        data[12][j] = 0x0A202020; // Newline character '\n' followed by spaces
-    }
-
+    u32_t v1[4], v2[4];
     u32_t coin[13];
 
-    // Main loop to find DETI coins
-    for (n_attempts = n_coins = 0ul; stop_request == 0; n_attempts += 4) {
+    srand(time(NULL));  // Semente para o gerador aleatório
+
+
+    for (int j = 0; j < 4; j++) {
+        data[0][j] = 0x49544544;  // "DETI" em little-endian
+        data[1][j] = 0x696F6320;  // "coi " em little-endian
+        data[2][j] = 0x6E20206E;  // "n  n" em little-endian
+        data[12][j] = 0x0A202020; // '\n' seguido de espaços
+    }
+
+    // Loop principal
+    while (!stop_request) {
         for (int i = 0; i < 4; i++) {
             v1[i] = random_printable_u32();
             v2[i] = random_printable_u32();
-            
-            
 
-            // Update data arrays for each lane
+            // Atualiza os campos aleatórios em `data`
             data[3][i] = v1[i];
             data[4][i] = v2[i];
         }
 
-        // Compute MD5 hashes for all lanes
+        // Calcula os hashes MD5 para as 4 lanes
         md5_cpu_avx((v4si *)data, (v4si *)hash);
 
+        // Verifica se algum hash é válido
         for (int lane = 0; lane < 4; lane++) {
             if (hash[3][lane] == 0) {
+                // Salva o coin encontrado
                 for (int i = 0; i < 13; i++) {
                     coin[i] = data[i][lane];
                 }
@@ -95,9 +65,11 @@ static void deti_coins_cpu_avx_search(uint32_t n_random_words) {
                 n_coins++;
             }
         }
+
+        n_attempts += 4;  
     }
 
-    // Save and display the final count of DETI coins found
+    // Salva e exibe o total de coins encontrados
     STORE_DETI_COINS();
     printf("deti_coins_cpu_avx_search: %lu DETI coin%s found in %lu attempts\n",
            n_coins, n_coins == 1 ? "" : "s", n_attempts);
