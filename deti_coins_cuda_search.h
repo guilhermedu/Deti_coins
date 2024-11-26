@@ -5,90 +5,79 @@
 #include <cuda.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "md5.h"
+#include "search_utilities.h"
+#include <stdlib.h> // Necessário para a função rand()
+
+// Gera um valor aleatório de 32 bits com caracteres ASCII imprimíveis
+static u32_t random_value_to_try_ascii() {
+    u32_t value = 0;
+    for (int i = 0; i < 4; i++) {
+        u08_t random_char = (u08_t)(0x20 + (rand() % (0x7F - 0x20)));
+        value |= ((u32_t)random_char) << (i * 8);
+    }
+    return value;
+}
 
 static void deti_coins_cuda_search(u32_t n_random_words)
 {
-    u32_t idx, custom_word_1, custom_word_2;
+    u32_t idx, max_idx, random_word, custom_word_1, custom_word_2;
     u64_t n_attempts, n_coins;
-    void *cu_params[6];
-    CUdeviceptr device_data, device_hash, device_coins_storage;
-    u32_t *host_data;
-    CUfunction cu_kernel;
-    CUmodule cu_module;
-    CUdevice cu_device;
-    CUcontext cu_context;
-    CUdeviceptr device_coin;
-
+    void *cu_params[4];
+    
+    random_word = (n_random_words == 0u) ? 0x20202020u : random_value_to_try_ascii();
     // Inicializa palavras customizadas
     custom_word_1 = custom_word_2 = 0x20202020u;
 
-    // Inicializa o Driver API e cria o contexto
-    CU_CALL(cuInit, (0)); // Inicializa a API CUDA
-    CU_CALL(cuDeviceGet, (&cu_device, 0)); // Obtém o dispositivo CUDA
-    CU_CALL(cuCtxCreate, (&cu_context, 0, cu_device)); // Cria o contexto CUDA
+    initialize_cuda(0, "deti_coins_cuda_kernel_search.cubin", "deti_coins_cuda_kernel_search", 1024u, 0);
 
-    // Carrega o módulo CUDA e obtém o kernel
-    CU_CALL(cuModuleLoad, (&cu_module, "deti_coins_cuda_kernel_search.cubin"));
-    CU_CALL(cuModuleGetFunction, (&cu_kernel, cu_module, "cuda_md5_kernel_search"));
-
-    // Aloca memória no dispositivo
-    CU_CALL(cuMemAlloc, (&device_data, 1024 * sizeof(u32_t)));
-    CU_CALL(cuMemAlloc, (&device_hash, 1024 * sizeof(u32_t)));
-    CU_CALL(cuMemAlloc, (&device_coins_storage, 1024 * sizeof(u32_t)));
-
-    // Aloca memória no host
-    host_data = (u32_t *)malloc(1024 * sizeof(u32_t));
-    if (!host_data) {
-        fprintf(stderr, "Falha na alocação de memória no host\n");
-        exit(EXIT_FAILURE);
-    }
-
+    max_idx = 1u;
     // Inicializa o loop de busca
     for (n_attempts = n_coins = 0ul; stop_request == 0; n_attempts += (64ul << 20)) {
         // Prepara os dados no host
         host_data[0] = 1u; // A posição 0 armazena o índice da próxima posição livre
-        CU_CALL(cuMemcpyHtoD, (device_data, host_data, 1024 * sizeof(u32_t)));
+        CU_CALL(cuMemcpyHtoD, (device_data, (void *)host_data, 1024 * sizeof(u32_t)));
 
+        
         // Configura os parâmetros do kernel
         cu_params[0] = (void *)&device_data;
-        cu_params[1] = (void *)&device_hash;
-        cu_params[2] = (void *)&device_coin;             
-        cu_params[3] = (void *)&device_coins_storage;
-        cu_params[4] = (void *)&custom_word_1;
-        cu_params[5] = (void *)&custom_word_2;
-
+        cu_params[1] = (void *)&random_word;
+        cu_params[2] = (void *)&custom_word_1;             
+        cu_params[3] = (void *)&custom_word_2;
 
         // Lança o kernel
         CU_CALL(cuLaunchKernel, (cu_kernel,
-                         10, 1, 1,   // Grid dimensions
-                         64, 1, 1,   // Block dimensions
-                         0, 0,       // Shared memory e stream
-                         cu_params, 0));
+                         (1u << 20)/128u, 1u, 1u,   // Grid dimensions
+                         128u, 1u, 1u,   // Block dimensions
+                         0u, (CUstream)0,       // Shared memory e stream
+                         &cu_params[0], NULL));
         // Copia os resultados de volta para o host
-        CU_CALL(cuMemcpyDtoH, (host_data, device_data, 1024 * sizeof(u32_t)));
-
-        // Processa os resultados no host
-        for (idx = 1u; idx < host_data[0]; idx += 13u) {
-            n_coins++;
-            printf("Found DETI coin: ");
-            for (int i = 0; i < 13; i++) {
-                printf("%08x ", host_data[idx + i]);
+        CU_CALL(cuMemcpyDtoH, ((void *)host_data, device_data, 1024 * sizeof(u32_t)));
+        //printf("random_word = %08X, custom_word_1 = %08X, custom_word_2 = %08X\n", random_word, custom_word_1, custom_word_2);
+        if (host_data[0] > max_idx)
+            max_idx = host_data[0];
+        for (idx = 1u; idx < host_data[0] && idx <= 1024 - 13u; idx += 13u) {
+            if (idx <= 1024 - 13u) {
+                //printf("host_data[%u] = %08X\n", idx, host_data[idx]);
+                save_deti_coin(&host_data[idx]);
+                n_coins++;
+            } else {
+                fprintf(stderr, "deti_coins_cuda_search: wasted DETI coin \n");
             }
-            printf("\n");
         }
-    }
-
-    // Libera memória do dispositivo
-    CU_CALL(cuMemFree, (device_data));
-    CU_CALL(cuMemFree, (device_hash));
-    CU_CALL(cuMemFree, (device_coins_storage));
-
-    // Libera memória do host
-    free(host_data);
-
-    // Destroi o contexto CUDA
-    CU_CALL(cuCtxDestroy, (cu_context));
+        if (custom_word_1 != 0x7E7E7E7Eu) {
+            //printf("random_word = %08X, custom_word_1 = %08X, custom_word_2 = %08X\n", random_word, custom_word_1, custom_word_2);
+            next_value_to_try(custom_word_1); 
+        } else {
+            custom_word_1 = 0x20202020u;
+            next_value_to_try(custom_word_2);
+        }
+        
+    }   
+    STORE_DETI_COINS();
+    printf("deti_coins_cpu_search: %lu DETI coin%s found in %lu attempt%s (expected %.2f coins)\n",
+        n_coins, (n_coins == 1ul) ? "" : "s",
+        n_attempts, (n_attempts == 1ul) ? "" : "s",
+        (double)n_attempts / (double)(1ul << 32));
 }
 
 #endif // DETI_COINS_CUDA_SEARCH

@@ -66,5 +66,5 @@ md5_cuda_kernel.cubin:			md5.h md5_cuda_kernel.cu
 	nvcc -arch=$(CUDA_ARCH) --compiler-options -O2,-Wall -I$(CUDA_DIR)/include --cubin md5_cuda_kernel.cu -o md5_cuda_kernel.cubin
 
 deti_coins_cuda_kernel_search.cubin:	md5.h deti_coins_cuda_kernel_search.cu
-	nvcc -arch=sm_61 --compiler-options -O2,-Wall -I/usr/local/cuda/include -I. --cubin deti_coins_cuda_kernel_search.cu -o deti_coins_cuda_kernel_search.cubin
+	nvcc -arch=$(CUDA_ARCH) --compiler-options -O2,-Wall -I$(CUDA_DIR)/include --cubin deti_coins_cuda_kernel_search.cu -o deti_coins_cuda_kernel_search.cubin
 
