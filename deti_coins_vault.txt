@@ -3,3 +3,97 @@ V01:DETI coin k0KG@!
 V00:DETI coin |zB4\!                                   
 V02:DETI coin >:J l!                                   
 V00:DETI coin +u!l""                                   
+V00:DETI coin  n\OAW3   4"Y@    H                      
+V00:DETI coin  n\OAWK"  V RM    B                      
+V00:DETI coin  n\OAWH$  >!YL    \                      
+V00:DETI coin  n\OAWn$  < AR    X                      
+V00:DETI coin  n\OAW<%  4!+%    C                      
+V01:DETI coin  n\OAWD%  #"]]    J                      
+V03:DETI coin  n\OAWx%  "!E#    R                      
+V00:DETI coin  n\OAW'&  W 5K    .                      
+V00:DETI coin  n\OAWO'  6#E)    -                      
+V01:DETI coin  n\OAWx(  S#-^    C                      
+V00:DETI coin  n\OAW|)  & NG    Y                      
+V00:DETI coin  n\OAW *  4 Y"    ;                      
+V00:DETI coin  n\OAW#*  U#0Z    +                      
+V00:DETI coin  n\OAWS+  S!/T    %                      
+V00:DETI coin  n\OAWe+  + ;Y    K                      
+V00:DETI coin  n\OAWx+  @ O1    \                      
+V00:DETI coin  n\OAWx+  T#AH    Z                      
+V00:DETI coin  n\OAWA,  !#>4    J                      
+V00:DETI coin  n\OAWU,  B )3    A                      
+V00:DETI coin  n\OAWX,  8#"'    B                      
+V00:DETI coin  n\OAW!-  9#Z$    *                      
+V00:DETI coin  n\OAW2-  7!;H    _                      
+V01:DETI coin  n\OAWH-  3"O!    3                      
+V02:DETI coin  n\OAWP-  %!44    X                      
+V00:DETI coin  n\OAWU-  E!!)    !                      
+V00:DETI coin  n\OAWi-  _">A    P                      
+V03:DETI coin  n\OAW).  Q"/]    $                      
+V01:DETI coin  n\OAW`0  B =Y    (                      
+V02:DETI coin  n\OAWd0  1"A*    ;                      
+V00:DETI coin  n\OAW-1  >![6    N                      
+V00:DETI coin  n\OAW<4  6!A1    V                      
+V02:DETI coin  n\OAWk4  D#+Y    0                      
+V01:DETI coin  n\OAWM5  2"25    K                      
+V00:DETI coin  n\OAWG6  H"KS    8                      
+V00:DETI coin  n\OAW]8  . #]    I                      
+V00:DETI coin  n\OAWA9  ?#@A    @                      
+V00:DETI coin  n\OAWS9  ' ED    F                      
+V00:DETI coin  n\OAWa9  9">G    ?                      
+V00:DETI coin  n\OAW~9  <#70    ;                      
+V00:DETI coin  n\OAW":  L#EU    J                      
+V00:DETI coin  n\OAWW:  U#I%    L                      
+V02:DETI coin  n\OAWX:  :"?Y    ?                      
+V03:DETI coin  n\OAWe:  Y 9E    R                      
+V00:DETI coin  n\OAW+;  &":0    G                      
+V00:DETI coin  n\OAWZ<  5#)I    _                      
+V01:DETI coin  n\OAW!=  >#2I    I                      
+V00:DETI coin  n\OAW9>  S#0^    P                      
+V01:DETI coin  n\OAWl?  &"$;    #                      
+V02:DETI coin  n\OAWx?  %"?     $                      
+V04:DETI coin  n\OAW+@  6!E$    C                      
+V00:DETI coin  n\OAW_B  Z +9    O                      
+V00:DETI coin  n\OAW6D  T 4M    *                      
+V01:DETI coin  n\OAWkD  Q"*]    K                      
+V00:DETI coin  n\OAWEE  %!@:    R                      
+V01:DETI coin  n\OAW]F  K#)"    _                      
+V00:DETI coin  n\OAW8G  M!@     (                      
+V00:DETI coin  n\OAW~G  J"L>    <                      
+V00:DETI coin  n\OAW5H  $!!^    P                      
+V00:DETI coin  n\OAWEH  ;"0=    *                      
+V00:DETI coin  n\OAW"I  _!KE    5                      
+V00:DETI coin  n\OAWmI  3">B    `                      
+V01:DETI coin  n\OAWrL  Y",>    J                      
+V06:DETI coin  n\OAWJO  B"7K    C                      
+V02:DETI coin  n\OAWvO  R"Z!    F                      
+V00:DETI coin  n\OAWwP  9#/6    Q                      
+V00:DETI coin  n\OAW~P  9 A+    A                      
+V01:DETI coin  n\OAWeQ  *!T<    +                      
+V02:DETI coin  n\OAW6R  Y MK    <                      
+V01:DETI coin  n\OAWER  C#PF    B                      
+V01:DETI coin  n\OAWOS  [ (X    I                      
+V02:DETI coin  n\OAWyS  <!AZ    @                      
+V02:DETI coin  n\OAWhT  Z!>]    Y                      
+V00:DETI coin  n\OAWjU  ""TM    (                      
+V01:DETI coin  n\OAWkU  6"N"    F                      
+V01:DETI coin  n\OAWNV  G A^    Q                      
+V00:DETI coin  n\OAWYV  @ Y>    ;                      
+V02:DETI coin  n\OAW+W  &",&    U                      
+V00:DETI coin  n\OAWqY  6"9\    V                      
+V00:DETI coin  n\OAWxZ  D"FU    T                      
+V00:DETI coin  n\OAW@\  (#&%    !                      
+V00:DETI coin  n\OAW_\  K"?!    #                      
+V00:DETI coin  n\OAWu\  I -$    9                      
+V02:DETI coin  n\OAW}]  #"E6    K                      
+V01:DETI coin  n\OAWu^  @!LW    ?                      
+V03:DETI coin  n\OAWv^  N BY    "                      
+V00:DETI coin  n\OAWo_  Q">X    Y                      
+V01:DETI coin  n\OAW?`  ' IW    "                      
+V00:DETI coin  n\OAW9a  U#'P    ?                      
+V05:DETI coin  n\OAWta  .#\R    E                      
+V00:DETI coin  n\OAW3b  8#_V    *                      
+V00:DETI coin  n\OAW;b  &!TY    >                      
+V01:DETI coin  n\OAW>d  P#CZ    A                      
+V01:DETI coin  n\OAWHd  '#PA    A                      
+V01:DETI coin  n\OAWbf  F#J)    Z                      

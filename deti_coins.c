@@ -16,12 +16,13 @@
 
 
 #if defined(__GNUC__) && __BYTE__ORDER__ != __LITTLE_ENDIAN__
-# error "this code requires a little-endian processor"
+//# error "this code requires a little-endian processor"
 #endif
 
 #ifndef USE_CUDA
 # define USE_CUDA 0
 #endif
+
 
 
 //
@@ -71,6 +72,13 @@ typedef unsigned long u64_t;
 # include "cuda_driver_api_utilities.h"
 # include "md5_cuda.h"
 #endif
+
+
+# define static
+# include "deti_coins_opencl_search.h"
+# undef static
+
+
 
 static void all_md5_tests(void)
 {
@@ -143,6 +151,7 @@ static void alarm_signal_handler(int dummy)
 #if USE_CUDA > 0
 # include "deti_coins_cuda_search.h"
 #endif
+
 
 
 //
@@ -225,6 +234,13 @@ int main(int argc,char **argv)
         deti_coins_cuda_search(n_random_words);
         break;
 #endif
+#ifdef DETI_COINS_OPENCL_SEARCH
+      case '5':
+        printf("searching for %u seconds using deti_coins_cuda_search()\n",seconds);
+        fflush(stdout);
+        deti_coins_opencl_search(n_random_words);
+        break;
+#endif
 #ifdef DETI_COINS_CPU_SPECIAL_SEARCH
       case '9':
         printf("searching for %u seconds using deti_coins_cpu_special_search()\n",seconds);
@@ -248,6 +264,9 @@ int main(int argc,char **argv)
 #endif
 #ifdef DETI_COINS_CUDA_SEARCH
   fprintf(stderr,"       %s -s4 [seconds] [n_random_words]   # search for DETI coins using CUDA\n",argv[0]);
+#endif
+#ifdef DETI_COINS_OPENCL_SEARCH
+  fprintf(stderr,"       %s -s7 [seconds] [n_random_words]   # search for DETI coins using OPEN_CL\n",argv[0]);
 #endif
 #ifdef DETI_COINS_CPU_SPECIAL_SEARCH
   fprintf(stderr,"       %s -s9 [seconds] [ignored]          # special search for DETI coins using md5_cpu()\n",argv[0]);
