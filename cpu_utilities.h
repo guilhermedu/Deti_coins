@@ -104,7 +104,7 @@ static u32_t parse_time_duration(const char *time_duration)
       case '0' ... '9': // gcc or clang feature
         if(n < 0l)
           n = 0l;
-        if(n >= (1l << 32))
+        if(n >= (1l << 31))
           return 0u; // integer overflow
         n = 10l * n + (long)(*time_duration - '0');
         break;
@@ -121,7 +121,7 @@ static u32_t parse_time_duration(const char *time_duration)
         if(hours < 0l) hours = 0l;
         if(days < 0l) days = 0l;
         n = seconds + 60l * (minutes + 60l * (hours + 24l * days));
-        return (n >= (1l << 32)) ? 0u : (u32_t)n;
+        return (n >= (1l << 31)) ? 0u : (u32_t)n;
     }
 }
 

@@ -3,3 +3,154 @@ V01:DETI coin k0KG@!
 V00:DETI coin |zB4\!                                   
 V02:DETI coin >:J l!                                   
 V00:DETI coin +u!l""                                   
+V01:DETI coin  n^^b|]   D @/    S                      
+V01:DETI coin  n^^b|k   ]!!X    4                      
+V03:DETI coin  n^^b|w   -"PO    J                      
+V00:DETI coin  n^^b|<!  6"FU    -                      
+V01:DETI coin  n^^b|C!  D O>    %                      
+V04:DETI coin  n^^b|c!  ]#YN    /                      
+V02:DETI coin  n^^b|<#  A"$?    %                      
+V03:DETI coin  n^^b|#$  X!Y!    I                      
+V02:DETI coin  n^^b|"%  6"#&    ^                      
+V01:DETI coin  n^^b|.%  )#O!    \                      
+V01:DETI coin  n^^b|7%  Z#90    O                      
+V00:DETI coin  n^^b|;%  7"EO    ]                      
+V05:DETI coin  n^^b|X%  X![N    3                      
+V01:DETI coin  n^^b|j%  1#@[    A                      
+V01:DETI coin  n^^b|O&  2!<K    M                      
+V02:DETI coin  n^^b|>'  I K$    0                      
+V04:DETI coin  n^^b|r'  @"#*    R                      
+V01:DETI coin  n^^b|'(  E!L6    J                      
+V03:DETI coin  n^^b|1(  ?#S^    X                      
+V01:DETI coin  n^^b|F(  K!9!    ]                      
+V01:DETI coin  n^^b|#*  4"ZP    0                      
+V00:DETI coin  n^^b|.*  8"MN    [                      
+V01:DETI coin  n^^b|3*  >"MZ    #                      
+V01:DETI coin  n^^b|I*  > 4(    3                      
+V01:DETI coin  n^^b|U+  G#@M    X                      
+V00:DETI coin  n^^b|},  F"90    *                      
+V01:DETI coin  n^^b|#-  %#78    ]                      
+V00:DETI coin  n^^b|o-  Z Y]    Y                      
+V00:DETI coin  n^^b|x.  P"IH    L                      
+V00:DETI coin  n^^b| /  X!\\    $                      
+V07:DETI coin  n^^b|T/  , *_    )                      
+V01:DETI coin  n^^b|Z/  @ *Q    #                      
+V01:DETI coin  n^^b|q0  &!K\    '                      
+V00:DETI coin  n^^b|&1  H N[    G                      
+V01:DETI coin  n^^b|81  Y#Q8    `                      
+V00:DETI coin  n^^b|<1  9#]>    D                      
+V01:DETI coin  n^^b|Q1  P#/Q    ]                      
+V00:DETI coin  n^^b|%2  9!]>    A                      
+V02:DETI coin  n^^b|$3  B!N]    W                      
+V00:DETI coin  n^^b|,3  >!K%    7                      
+V00:DETI coin  n^^b|A3  >#9,    -                      
+V02:DETI coin  n^^b|/5  2#SN    *                      
+V03:DETI coin  n^^b|M5  K WQ    T                      
+V03:DETI coin  n^^b|D7  X#^@    P                      
+V00:DETI coin  n^^b|0:  H 2)    .                      
+V01:DETI coin  n^^b|;:  # S\    4                      
+V00:DETI coin  n^^b|O:  ! _X    P                      
+V00:DETI coin  n^^b|4;  6"N.    2                      
+V00:DETI coin  n^^b|@;  1#$>    0                      
+V02:DETI coin  n^^b|*<  <!:X    Z                      
+V00:DETI coin  n^^b|X=  J!U@    V                      
+V02:DETI coin  n^^b|s>  9#1%    R                      
+V04:DETI coin  n^^b|<?  !!-B    '                      
+V00:DETI coin  n^^b|$A  %#X>    B                      
+V00:DETI coin  n^^b|XA  - H3    T                      
+V00:DETI coin  n^^b|nA  W H"    Y                      
+V04:DETI coin  n^^b|9B  Y#H:    "                      
+V03:DETI coin  n^^b|~B  5"^X    /                      
+V01:DETI coin  n^^b| C  ? G%    7                      
+V02:DETI coin  n^^b|-C  ""$E    K                      
+V02:DETI coin  n^^b|>D  P!&K    /                      
+V01:DETI coin  n^^b|}E  I""#    B                      
+V01:DETI coin  n^^b|&H  ) '1    S                      
+V07:DETI coin  n^^b|&I  N GV    C                      
+V00:DETI coin  n^^b|(I  N!NY    ]                      
+V00:DETI coin  n^^b|*I  X 55    D                      
+V00:DETI coin  n^^b|XI  0"/5    N                      
+V00:DETI coin  n^^b|nK  Y"$Y    %                      
+V01:DETI coin  n^^b|"L  ,"33    ,                      
+V02:DETI coin  n^^b|&L  X#;#    9                      
+V01:DETI coin  n^^b|7M   "QN    M                      
+V02:DETI coin  n^^b|CM  8#:$    I                      
+V04:DETI coin  n^^b|DM  % J=    '                      
+V02:DETI coin  n^^b|4N  K#Q;    =                      
+V01:DETI coin  n^^b|rO  4#M7    C                      
+V01:DETI coin  n^^b|vO  O G/    _                      
+V00:DETI coin  n^^b|ZP  *##P    4                      
+V00:DETI coin  n^^b|1Q  F#SF    U                      
+V00:DETI coin  n^^b|.R  C"&N    L                      
+V02:DETI coin  n^^b|nR  Y#XQ    ?                      
+V00:DETI coin  n^^b|YS  @!HT    -                      
+V05:DETI coin  n^^b|{S  (#3P    :                      
+V03:DETI coin  n^^b|VT  E +>    ;                      
+V07:DETI coin  n^^b|jT  >"D[    -                      
+V00:DETI coin  n^^b|xU  8#@@    )                      
+V01:DETI coin  n^^b||W  4#9F    I                      
+V02:DETI coin  n^^b|QX  =  O    )                      
+V00:DETI coin  n^^b|`Y  G##@    Z                      
+V02:DETI coin  n^^b|XZ  - ?#    =                      
+V01:DETI coin  n^^b|~]  N#+Q    2                      
+V00:DETI coin  n^^b|;_  3 %Y    9                      
+V00:DETI coin  n^^b|__  "!BZ    U                      
+V00:DETI coin  n^^b||_  & DJ    J                      
+V02:DETI coin  n^^b|a`  _#T]    _                      
+V00:DETI coin  n^^b|c`  1#BO    3                      
+V03:DETI coin  n^^b|h`  H N:    Q                      
+V04:DETI coin  n^^b|Ta  N":H    R                      
+V00:DETI coin  n^^b|Zb  Z!'V    \                      
+V00:DETI coin  n^^b|'d  3#5Y    ]                      
+V02:DETI coin  n^^b|nd  &#TB    \                      
+V00:DETI coin  n^^b|pf  "!G6    \                      
+V00:DETI coin  n^^b|*g  ]"#H    @                      
+V02:DETI coin  n^^b|'h  H LU    ;                      
+V01:DETI coin  n^^b|dh  S"C.    W                      
+V02:DETI coin  n^^b|ph  U"]R    6                      
+V01:DETI coin  n^^b|vh  ("NA    G                      
+V02:DETI coin  n^^b|ii  4#>F    +                      
+V01:DETI coin  n^^b|mi  ;!BG    L                      
+V01:DETI coin  n^^b|ui  ?!0C    2                      
+V01:DETI coin  n^^b|}i  &"^5    -                      
+V01:DETI coin  n^^b|Sj  3#GK    !                      
+V02:DETI coin  n^^b|>l  6"K#    1                      
+V04:DETI coin  n^^b|Am  Y /M    [                      
+V00:DETI coin  n^^b|0q  % P"    T                      
+V00:DETI coin  n^^b|Sq  6#[;    G                      
+V00:DETI coin  n^^b|rr  _!LR    +                      
+V02:DETI coin  n^^b|kt  E"&#    &                      
+V00:DETI coin  n^^b|Uu  ; MA    @                      
+V00:DETI coin  n^^b|wu  H"C5    D                      
+V00:DETI coin  n^^b|5v  &!BQ    -                      
+V01:DETI coin  n^^b|<v  H#BX    X                      
+V00:DETI coin  n^^b|iv  3 I'    ;                      
+V08:DETI coin  n^^b|:w  ["-]    _                      
+V00:DETI coin  n^^b|7x  ? H^    7                      
+V00:DETI coin  n^^b|gy  , YR    P                      
+V01:DETI coin  n^^b|ez  8!1^    T                      
+V03:DETI coin  n^^b|^{  * G^    B                      
+V00:DETI coin  n^^b|a}  3 C8    0                      
+V00:DETI coin  n^^b|k}  3"3B    /                      
+V01:DETI coin  n^^b|y}  [!UU    >                      
+V01:DETI coin  n^^b|p~  &!^L    0                      
+V00:DETI coin  n^^b|! ! H T1    [                      
+V00:DETI coin  n^^b|{ ! " B     H                      
+V03:DETI coin  n^^b|1!! ]!_,    A                      
+V00:DETI coin  n^^b|y"! >"W_    8                      
+V02:DETI coin  n^^b|4#! 3"L4    ?                      
+V00:DETI coin  n^^b|%$! ! M.    7                      
+V01:DETI coin  n^^b|5%! \"]:    I                      
+V01:DETI coin  n^^b|0&! X Y+    9                      
+V01:DETI coin  n^^b|@&! 8!%F    %                      
+V01:DETI coin  n^^b|i&! M 7\    C                      
+V02:DETI coin  n^^b|<'! . .P    "                      
+V00:DETI coin  n^^b|[(! ^ D[    7                      
+V01:DETI coin  n^^b|p(! V"+#    I                      
+V01:DETI coin  n^^b|')! ) WD    I                      
+V00:DETI coin  n^^b|9+! C!:>    '                      
+V01:DETI coin  n^^b|L+! ]"1R    4                      
+V01:DETI coin  n^^b|~+! K (6    .                      
+V00:DETI coin  n^^b|4,! ( L_    O                      
+V01:DETI coin  n^^b|<-! M#',    P                      
+V01:DETI coin  n^^b|#.! Z!4,    $                      

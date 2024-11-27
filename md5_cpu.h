@@ -12,6 +12,8 @@
 #ifndef MD5_CPU
 #define MD5_CPU
 
+#include "md5.h"
+#include <string.h>
 //
 // CPU-only implementation (assumes a little-endian CPU)
 //
@@ -44,8 +46,7 @@ static void test_md5_cpu(void)
 # define N_MD5SUM_TESTS  64u
 # define N_TIMING_TESTS  1000000u
   u32_t n,idx,*htd,*hth;
-  char buffer[64],*e;
-  FILE *fp;
+
 
   htd = &host_md5_test_data[0u];
   hth = &host_md5_test_hash[0u];
@@ -61,32 +62,24 @@ static void test_md5_cpu(void)
     //
     // compare the MD5 hash with the output of the md5sum command
     //
-    if(n < N_MD5SUM_TESTS)
-    {
-      fp = fopen("/tmp/hash.data","wb");
-      if(fp == NULL || fwrite((void *)htd,(size_t)1,(size_t)(13 * 4),fp) != (size_t)(13 * 4) || fclose(fp) != 0)
-      {
-        remove("/tmp/hash.data");
-        fprintf(stderr,"test_md5_cpu: unable to create file \"/tmp/hash.data\"\n");
-        exit(1);
-      }
-      fp = popen("md5sum /tmp/hash.data","r");
-      if(fp == NULL || fread(buffer,(size_t)1,(size_t)33,fp) != (size_t)33 || buffer[32u] != ' ' || pclose(fp) != 0)
-      {
-        remove("/tmp/hash.data");
-        fprintf(stderr,"test_md5_cpu: error while running the md5sum command\n");
-        exit(1);
-      }
-      for(idx = 4u;idx > 0u;idx--)
-      {
-        buffer[8u * idx] = '\0';
-        if(strtoul(&buffer[8u * (idx - 1u)],&e,16u) != (unsigned long)SWAP(hth[idx - 1u]) || *e != '\0')
-        {
-          remove("/tmp/hash.data");
-          fprintf(stderr,"test_md5_cpu: MD5 hash error for message %u\n",n);
-          exit(1);
+    if (n < N_MD5SUM_TESTS) {
+    unsigned char computed_hash[16];
+
+    // Calcula o hash MD5 dos dados htd
+    MD5((unsigned char *)htd, 13 * 4, computed_hash);
+
+    // Verifica se o hash calculado corresponde ao#include <string.h> esperado
+    for (idx = 0; idx < 4; idx++) {
+        // Converte os 4 bytes do hash para u32_t, considerando endianess
+        u32_t hash_part;
+        memcpy(&hash_part, &computed_hash[idx * 4], 4);
+        hash_part = SWAP(hash_part);
+
+        if (hash_part != hth[idx]) {
+            fprintf(stderr, "test_md5_cpu: MD5 hash error for message %u\n", n);
+            exit(1);
         }
-      }
+    }
     }
     //
     // advance to the next message
@@ -94,10 +87,6 @@ static void test_md5_cpu(void)
     htd = &htd[13u];
     hth = &hth[ 4u];
   }
-  //
-  // clean up
-  //
-  remove("/tmp/hash.data");
   //
   // measure the execution time of mp5_cpu()
   //

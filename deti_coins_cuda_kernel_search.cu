@@ -8,7 +8,7 @@ typedef unsigned char u08_t;
 
 
 
-__device__ unsigned int coin_counter = 0;
+
 
 
 extern "C" __global__ __launch_bounds__(128, 1) void deti_coins_cuda_kernel_search(
