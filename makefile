@@ -85,8 +85,8 @@ deti_coins_opencl_kernel.bin: md5.h deti_coins_opencl_kernel.cl
 #
 # Compile deti_coins.c with OpenCL support
 #
-deti_coins_opencl_search: $(SRC) $(H_FILES) deti_coins_opencl_kernel.bin 
-	cc -Wall -O2 -DUSE_OPENCL=1 -DDETI_COINS_OPENCL_SEARCH=1 $(SRC) -o deti_coins_opencl_search -L/lib -lOpenCL
+deti_coins_opencl_search: $(SRC) $(H_FILES) deti_coins_opencl_kernel.bin
+	cc -Wall -O2 -DUSE_OPENCL=1 -DDETI_COINS_OPENCL_SEARCH $(SRC) -o deti_coins_opencl_search -lOpenCL
 
 
 #
