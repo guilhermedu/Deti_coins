@@ -13,6 +13,8 @@
 #include <immintrin.h>
 #include <omp.h>
 #include <time.h>
+#include <errno.h>
+#include <sys/select.h>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -49,7 +51,7 @@ typedef struct {
 
 // Function prototypes
 static int setup_server(int port_number);
-static int get_connection(int listen_fd, char connection_ipv4_address[32]);
+static int get_connection(int listen_fd, char connection_ipv4_address[32], time_t start_time, uint32_t seconds);
 static void close_socket(int socket_fd);
 static int send_message(int socket_fd, message_t *m);
 static int receive_message(int socket_fd, message_t *m);
@@ -211,26 +213,22 @@ void random_printable_u32_avx2_server(uint32_t *v, __m256i *state) {
     __m256i rand_bytes_lo = _mm256_unpacklo_epi8(rand_bytes, zero);
     __m256i rand_bytes_hi = _mm256_unpackhi_epi8(rand_bytes, zero);
 
-    // Define mask and base for printable ASCII characters
-    __m256i mask = _mm256_set1_epi16(95); // Range size (0x7E - 0x20 + 1)
-    __m256i base = _mm256_set1_epi16(0x20); // Base ASCII value (32)
+    // Multiply by 95 to scale values to the range [0, 94]
+    __m256i mult_factor = _mm256_set1_epi16(95);
+    rand_bytes_lo = _mm256_mullo_epi16(rand_bytes_lo, mult_factor);
+    rand_bytes_hi = _mm256_mullo_epi16(rand_bytes_hi, mult_factor);
 
-    // Use modulo operation (since AVX2 doesn't have modulo, use bitwise AND if the range is power of two)
-    // For 95, we can't use bitwise AND, so we need to simulate modulo or limit values
+    // Divide by 256 using a right shift to finalize scaling
+    rand_bytes_lo = _mm256_srli_epi16(rand_bytes_lo, 8);
+    rand_bytes_hi = _mm256_srli_epi16(rand_bytes_hi, 8);
 
-    // Alternative: Use `_mm256_rem_epi16` equivalent or adjust method
-    // For simplicity, we'll use bitmasking to limit the range, acknowledging it's not perfect
-
-    // Apply mask to limit the range (this will produce values from 0 to 94)
-    __m256i chars_lo = _mm256_and_si256(rand_bytes_lo, _mm256_set1_epi16(0x7F));
-    __m256i chars_hi = _mm256_and_si256(rand_bytes_hi, _mm256_set1_epi16(0x7F));
-
-    // Add base to shift to the printable ASCII range
-    chars_lo = _mm256_add_epi16(chars_lo, base);
-    chars_hi = _mm256_add_epi16(chars_hi, base);
+    // Add base to shift to the printable ASCII range [32, 126]
+    __m256i base = _mm256_set1_epi16(0x20); // ASCII value 32
+    rand_bytes_lo = _mm256_add_epi16(rand_bytes_lo, base);
+    rand_bytes_hi = _mm256_add_epi16(rand_bytes_hi, base);
 
     // Pack back to 8-bit integers
-    __m256i chars = _mm256_packus_epi16(chars_lo, chars_hi);
+    __m256i chars = _mm256_packus_epi16(rand_bytes_lo, rand_bytes_hi);
 
     // Store the result
     _mm256_storeu_si256((__m256i *)v, chars);
@@ -239,8 +237,9 @@ void random_printable_u32_avx2_server(uint32_t *v, __m256i *state) {
 
 
 // Main server function
-void deti_coins_server_avx2() {
+void deti_coins_server_avx2(uint32_t seconds) {
     int listen_fd;
+    time_t start_time = time(NULL);
 
     // Set up the server socket
     listen_fd = setup_server(PORT_NUMBER);
@@ -248,13 +247,24 @@ void deti_coins_server_avx2() {
     printf("Server listening on port %d\n", PORT_NUMBER);
 
     while (1) {
-        // Accept new client connection
+        // Check if the specified time has elapsed
+        if (difftime(time(NULL), start_time) >= seconds) {
+            printf("Server has run for %u seconds. Shutting down.\n", seconds);
+            break;
+        }
+
+        // Accept new client connection with timeout
         int *client_socket = malloc(sizeof(int));
         if (!client_socket) {
             perror("Failed to allocate memory for client socket");
             continue;
         }
-        *client_socket = get_connection(listen_fd, NULL);
+        *client_socket = get_connection(listen_fd, NULL, start_time, seconds);
+        if (*client_socket < 0) {
+            // Time limit reached or error occurred
+            free(client_socket);
+            break;
+        }
 
         // Create a new thread to handle the client
         pthread_t thread_id;
@@ -267,7 +277,7 @@ void deti_coins_server_avx2() {
         pthread_detach(thread_id);
     }
 
-    // Close the listening socket (unreachable code in this loop)
+    // Close the listening socket
     close_socket(listen_fd);
 }
 
@@ -397,20 +407,51 @@ static int setup_server(int port_number) {
 }
 
 // Function to accept a new client connection
-static int get_connection(int listen_fd, char connection_ipv4_address[32]) {
+static int get_connection(int listen_fd, char connection_ipv4_address[32], time_t start_time, uint32_t seconds) {
     struct sockaddr_in peer_address;
-    socklen_t peer_length;
+    socklen_t peer_length = sizeof(peer_address);
     int connection_fd;
 
-    peer_length = sizeof(peer_address);
-    connection_fd = accept(listen_fd, (struct sockaddr *)&peer_address, &peer_length);
-    if (connection_fd < 0) {
-        perror("get_connection(): accept");
-        exit(1);
+    while (1) {
+        // Calculate remaining time
+        double time_left = seconds - difftime(time(NULL), start_time);
+        if (time_left <= 0) {
+            // Time limit reached
+            return -1;
+        }
+
+        // Set up file descriptor set
+        fd_set read_fds;
+        FD_ZERO(&read_fds);
+        FD_SET(listen_fd, &read_fds);
+
+        // Set timeout
+        struct timeval timeout;
+        timeout.tv_sec = (int)time_left;
+        timeout.tv_usec = (time_left - (int)time_left) * 1e6;
+
+        // Use select to wait for incoming connections with timeout
+        int activity = select(listen_fd + 1, &read_fds, NULL, NULL, &timeout);
+
+        if (activity < 0 && errno != EINTR) {
+            perror("get_connection(): select");
+            return -1;
+        } else if (activity == 0) {
+            // Timeout occurred, check elapsed time
+            continue;
+        }
+
+        if (FD_ISSET(listen_fd, &read_fds)) {
+            connection_fd = accept(listen_fd, (struct sockaddr *)&peer_address, &peer_length);
+            if (connection_fd < 0) {
+                perror("get_connection(): accept");
+                return -1;
+            }
+            if (connection_ipv4_address != NULL)
+                snprintf(connection_ipv4_address, 32, "%s", inet_ntoa(peer_address.sin_addr));
+            return connection_fd;
+        }
     }
-    if (connection_ipv4_address != NULL)
-        snprintf(connection_ipv4_address, 32, "%s", inet_ntoa(peer_address.sin_addr));
-    return connection_fd;
 }
 
 // Function to close a socket

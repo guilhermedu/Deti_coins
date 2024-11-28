@@ -297,34 +297,42 @@ int main(int argc,char **argv)
 #endif
 #ifdef DETI_COINS_SERVER_AVX2
             case 'a':
-                printf("Starting server using deti_coins_server_avx2()\n");
-                fflush(stdout);
-                deti_coins_server_avx2();
-                break;
+                if (argc != 3) {
+                  fprintf(stderr, "Usage: %s -a [seconds]\n", argv[0]);
+                  exit(1);
+                }
+                // command line option to run the server
+                // ./deti_coins -sa [seconds]
+                  seconds = (unsigned int)atoi(argv[2]);
+                  printf("Starting server for %u seconds using deti_coins_server_avx2()\n", seconds);
+                  fflush(stdout);
+                  deti_coins_server_avx2(seconds);
+                  break;
 #endif
 #ifdef DETI_COINS_CLIENT_AVX2
             case 'b':
                 if (argc != 4) {
-                    fprintf(stderr, "Usage: %s -s8 [seconds] [server_address:port]\n", argv[0]);
-                    exit(1);
-                }
-                {
-                    // Parse server address and port
-                    char *server_info = argv[3];
-                    char *colon_pos = strchr(server_info, ':');
-                    if (colon_pos == NULL) {
-                        fprintf(stderr, "Invalid server address format. Use server_address:port\n");
-                        exit(1);
-                    }
-                    *colon_pos = '\0'; // Split the string
-                    char *server_address = server_info;
-                    int port_number = atoi(colon_pos + 1);
+                fprintf(stderr, "Usage: %s -b [seconds] [server_address:port]\n", argv[0]);
+                exit(1);
+            }
+            seconds = (unsigned int)atoi(argv[2]);
 
-                    printf("Starting client to connect to %s:%d\n", server_address, port_number);
-                    fflush(stdout);
-                    deti_coins_client_avx2(server_address, port_number);
-                }
-                break;
+            // Parse server address and port
+            char *server_info = argv[3];
+            char *colon_pos = strchr(server_info, ':');
+            if (colon_pos == NULL) {
+                fprintf(stderr, "Invalid server address format. Use server_address:port\n");
+                exit(1);
+            }
+            *colon_pos = '\0'; // Split the string
+            char *server_address = server_info;
+            int port_number = atoi(colon_pos + 1);
+
+            printf("Starting client for %u seconds connecting to %s:%d using deti_coins_client_avx2()\n",
+                  seconds, server_address, port_number);
+            fflush(stdout);
+            deti_coins_client_avx2(server_address, port_number, seconds);
+            break;
 #endif
     }
     return 0;

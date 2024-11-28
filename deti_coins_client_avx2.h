@@ -37,10 +37,16 @@ void deti_coins_client(char *server_address, int port_number);
 
 // Implementations
 
-void deti_coins_client_avx2(char *server_address, int port_number) {
+void deti_coins_client_avx2(char *server_address, int port_number, uint32_t seconds) {
     int client_socket = connect_to_server(server_address, port_number);
+    time_t start_time = time(NULL);
 
     while (1) {
+        // Check if the specified time has elapsed
+        if (difftime(time(NULL), start_time) >= seconds) {
+            printf("Client has run for %u seconds. Shutting down.\n", seconds);
+            break;
+        }
         // Send work request
         message_t request = {MSG_WORK_REQUEST, 0, NULL};
         if (send_message(client_socket, &request) < 0) {
