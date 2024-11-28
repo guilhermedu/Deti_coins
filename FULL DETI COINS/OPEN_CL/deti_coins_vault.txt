@@ -1,0 +1,57 @@
+V02:DETI coin &p8gb                                    
+V01:DETI coin k0KG@!                                   
+V00:DETI coin |zB4\!                                   
+V02:DETI coin >:J l!                                   
+V00:DETI coin +u!l""                                                     
+V01:DETI coin  nYwb12       R#- 6H. h!  h!             
+V01:DETI coin  n{6_R:       bLo Oqp q!  q!             
+V01:DETI coin  ngb(RK       cK( Co) d   d              
+V03:DETI coin  n\L4jO       \[0 d!2 -"  -"             
+V01:DETI coin  n~LrgR       +GF FjG @   @              
+V01:DETI coin  n"e5sU       cJH ioI +"  +"             
+V03:DETI coin  ng5:pZ       vU(!8z)!F!  F!             
+V01:DETI coin  n2k&`h       Ws} (9 !U!  U!             
+V02:DETI coin  n24Egl       m>-!!d.!8"  8"             
+V01:DETI coin  n$o~o3!      vZT >~U L   L              
+V00:DETI coin  n|#vA9!      HHH olI L!  L!             
+V01:DETI coin  n) Lqo!      #f@ h+B j!  j!             
+V00:DETI coin  n&RzSt!      UV= Gz> v   v              
+V01:DETI coin  nMFc6;"      \1$ +U% S   S              
+V00:DETI coin  n{"ZwW"      Fkb ]0d <!  <!             
+V01:DETI coin  n:7~kl"      9Q0!gv1!S"  S"             
+V01:DETI coin  nk4J{ #      e7< n\= ."  ."             
+V00:DETI coin  nnr`!E#      3Iq ;mr -!  -!             
+V00:DETI coin  n(8U0W#      aEE (iF K   K              
+V01:DETI coin  n(8U0W#      =d!!z*#!b"  b"             
+V00:DETI coin  nP6z.[#      %b"!%($!%"  %"             
+V00:DETI coin  nSU zc#      VR1!Qv2! !   !             
+V00:DETI coin  n]it4o#      ~}Z tC\ z!  z!             
+V00:DETI coin  nQ},Yx#      tQ1 Fw2 V"  V"             
+V00:DETI coin  n>YTl $      J4u #Yv ]!  ]!             
+V00:DETI coin  njorv/$      8pz I6| 6"  6"             
+V00:DETI coin  nW41'4$      3~J oBL a   a              
+V00:DETI coin  n/F}K?$      ^g[ $,] J   J              
+V01:DETI coin  n^vXv`$      E$p aHq A!  A!             
+V00:DETI coin  n*/6ht$      2p2 y54 l!  l!             
+V01:DETI coin  nn%J^/%      &=.!bb/!a"  a"             
+V05:DETI coin  n^]5U=%      ~A* bf+ h!  h!             
+V01:DETI coin  nDC87Q%      XX[ x}\ E"  E"             
+V00:DETI coin  n#ncnh%      /''!]L(!S"  S"             
+V00:DETI coin  ns?$8|%      X4j 0Xk \   \              
+V02:DETI coin  nN->F)&      :)F ENG 0"  0"             
+V01:DETI coin  n;oti*&      Pai v'k K"  K"             
+V00:DETI coin  n3]|h@&      N8,!J]-!!"  !"             
+V01:DETI coin  n83x4D&      yb% v'' "!  "!             
+V01:DETI coin  ne[9\u&      `.^ xS_ ="  ="             
+V00:DETI coin  n/-}D{&      *@# 3c$ .   .              
+V01:DETI coin  nHqcQ}&      olJ :3L O"  O"             
+V00:DETI coin  n?i*b!'      GXw N|x ,!  ,!             
+V00:DETI coin  nNV$s%'      5M&!jp'!Z   Z              
+V01:DETI coin  n;8A@''      )n#!I3%!E!  E!             
+V03:DETI coin  nW2j]6'      <.$ 7R%  !   !             
+V00:DETI coin  n!*9Y='      F^< !$> _!  _!             
+V00:DETI coin  nQ){>B'      FPp Xsq 7   7              
+V02:DETI coin  nL6HG (      bg] w-_ :"  :"             
+V01:DETI coin  nAs2-7(      ;.$ [R% E!  E!             
+V00:DETI coin  n{Plu8(      fw2 v<4 5!  5!             
+V04:DETI coin  n(0pe9(      U,- TP. $!  $!             
