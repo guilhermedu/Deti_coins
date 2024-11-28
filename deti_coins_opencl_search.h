@@ -235,14 +235,11 @@ static void deti_coins_opencl_search(uint32_t n_random_words)
     // Loop de busca
     while (stop_request == 0) {
         // Update random_word
-        if (n_random_words != 0u) {
-            random_word = random_value_to_try_ascii();
-        }
+        random_word = random_value_to_try_ascii();
 
-        // Update custom_word_1 and custom_word_2
-        if (custom_word_1 != 0x7E7E7E7Eu) {
-            next_value_to_try(custom_word_1); 
-        } else {
+        // Update custom words
+        next_value_to_try(custom_word_1);
+        if (custom_word_1 == 0x7E7E7E7Eu) {
             custom_word_1 = 0x20202020u;
             next_value_to_try(custom_word_2);
         }
@@ -277,19 +274,42 @@ static void deti_coins_opencl_search(uint32_t n_random_words)
             break;
         }
 
-        // Processa os resultados
+        // Process results
         if (host_data[0] > max_idx)
             max_idx = host_data[0];
-        for (idx = 1u; idx < host_data[0] && idx <= 1024 - 13u; idx += 13u) {
-            if (idx <= 1024 - 13u) {
-                //printf("host_data[%u] = %08X\n", idx, host_data[idx]);
+        for (idx = 1u; idx < host_data[0] && idx <= 1024u - 13u; idx += 13u) {
+            if (idx <= 1024u - 13u) {
+                // Convert coin data to characters and print
+                char coin_str[53]; // 13 * 4 bytes + null terminator
+                for (int i = 0; i < 13; i++) {
+                    uint32_t word = host_data[idx + i];
+                    for (int j = 0; j < 4; j++) {
+                        coin_str[i * 4 + j] = (char)((word >> (j * 8)) & 0xFFu);
+                    }
+                }
+                coin_str[52] = '\0'; // Null terminator
+                printf("Coin found: %s\n", coin_str);
+
                 save_deti_coin(&host_data[idx]);
                 n_coins++;
             } else {
                 fprintf(stderr, "deti_coins_opencl_search: wasted DETI coin\n");
             }
         }
-        n_attempts += (64ul << 20);
+
+        // Reset host_data[0] to 1u
+        host_data[0] = 1u;
+
+        // Copy host_data[0] back to the device
+        err = clEnqueueWriteBuffer(command_queue, device_data, CL_TRUE, 0,
+                                sizeof(uint32_t), host_data, 0, NULL, NULL);
+        if (err != CL_SUCCESS) {
+            fprintf(stderr, "Failed to reset device data. Error code: %d\n", err);
+            break;
+        }
+
+        // Update attempt count
+        n_attempts += ((uint64_t)global_work_size * 256u);
     }
     STORE_DETI_COINS();
     printf("deti_coins_opencl_search: %lu DETI coin%s found in %lu attempt%s (expected %.2f coins)\n",

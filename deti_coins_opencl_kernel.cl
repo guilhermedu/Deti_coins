@@ -144,6 +144,7 @@
   }                                                 \
   while(0)
 
+
 // Function to increment a word while keeping characters printable
 void increment_coin_word(uint *word) {
     for (int i = 0; i < 4; ++i) {
@@ -180,8 +181,8 @@ __kernel void deti_coins_opencl_kernel_search(
    coin[4] = custom_word_1;
    coin[5] = custom_word_2;
 
-   // Initialize coin[6] with printable ASCII characters based on n
-   coin[6] = 0x20202020u;
+   // Properly initialize coin[6] based on n
+   coin[6] = 0;
    uint temp_n = n;
    for (int shift = 0; shift <= 24; shift += 8) {
        uchar char_code = (uchar)((temp_n % (0x7E - 0x20 + 1)) + 0x20u);
@@ -189,15 +190,26 @@ __kernel void deti_coins_opencl_kernel_search(
        temp_n /= (0x7E - 0x20 + 1);
    }
 
+   // Properly initialize coin[7] based on n
+   coin[7] = 0;
+   temp_n = n + 12345u; // Offset to vary starting points
+   for (int shift = 0; shift <= 24; shift += 8) {
+       uchar char_code = (uchar)((temp_n % (0x7E - 0x20 + 1)) + 0x20u);
+       coin[7] |= ((uint)char_code) << shift;
+       temp_n /= (0x7E - 0x20 + 1);
+   }
+
    // Initialize the rest of the coin
-   for (int i = 7; i < 12; i++) {
+   for (int i = 8; i < 12; i++) {
        coin[i] = 0x20202020u; // Padding with spaces
    }
    coin[12] = 0x0A202020u; // Ending with newline and spaces
 
-   // Start generating coins by incrementing coin[7]
-   for (uint i = 0; i < 64u; i++) {
+   // Start generating coins by incrementing multiple words
+   for (uint i = 0; i < 256u; i++) {
        increment_coin_word(&coin[7]);
+       increment_coin_word(&coin[8]);
+       increment_coin_word(&coin[9]);
 
        // Compute MD5 hash
        CUSTOM_MD5_CODE();
