@@ -135,7 +135,13 @@ static void alarm_signal_handler(int dummy)
 # include "deti_coins_cpu_avx_search.h"
 #endif
 #ifdef MD5_CPU_AVX2
-#include "deti_coins_cpu_avx2_search.h"
+# include "deti_coins_cpu_avx2_search.h"
+#endif
+#ifdef DETI_COINS_CPU_AVX2_SIMD_OPENMP_SEARCH
+# include "deti_coins_cpu_avx2_SIMD_OPENMP.h"
+#endif
+#ifdef DETI_COINS_CPU_AVX_SIMD_OPENMP_SEARCH
+# include "deti_coins_cpu_avx_SIMD_OPENMP.h"
 #endif
 //#ifdef MD5_CPU_NEON
 //# include "deti_coins_cpu_neon_search.h"
@@ -143,6 +149,24 @@ static void alarm_signal_handler(int dummy)
 //#if USE_CUDA > 0
 //# include "deti_coins_cuda_search.h"
 //#endif
+#ifdef DETI_COINS_SERVER
+# include "deti_coins_server.h"
+#endif
+#ifdef DETI_COINS_CLIENT
+# include "deti_coins_client.h"
+#endif
+#ifdef DETI_COINS_CLIENT_AVX2
+# include "deti_coins_client_avx2.h"
+#endif
+#ifdef DETI_COINS_SERVER_AVX2
+# include "deti_coins_server_avx2.h"
+#endif
+#if USE_CUDA > 0
+# include "deti_coins_cuda_search.h"
+#endif
+#ifdef DETI_COINS_OPENCL_SEARCH
+# include "deti_coins_opencl_search.h"
+#endif
 
 
 //
@@ -225,12 +249,110 @@ int main(int argc,char **argv)
         deti_coins_cuda_search(n_random_words);
         break;
 #endif
+#ifdef DETI_COINS_CPU_AVX_SIMD_OPENMP_SEARCH
+      case '5':
+          printf("searching for %u seconds using deti_coins_cpu_avx_simd_openmp_search()\n", seconds);
+          fflush(stdout);
+          deti_coins_cpu_avx_simd_openmp_search(n_random_words);
+          break;
+#endif
+#ifdef DETI_COINS_CPU_AVX2_SIMD_OPENMP_SEARCH
+      case '6':
+          printf("searching for %u seconds using deti_coins_cpu_avx2_simd_openmp_search()\n", seconds);
+          fflush(stdout);
+          deti_coins_cpu_avx2_simd_openmp_search(n_random_words);
+          break;
+#endif
+#ifdef DETI_COINS_SERVER
+      case '7':
+        printf("searching for %u seconds using deti_coins_server()\n",seconds);
+        fflush(stdout);
+        deti_coins_server();
+        break;
+#endif
+#ifdef DETI_COINS_CLIENT
+      case '8':
+        if (argc != 4) {
+            fprintf(stderr, "Usage: %s -s8 [seconds] [server_address:port]\n", argv[0]);
+            exit(1);
+        }
+        {
+            // Parse server address and port
+            char *server_info = argv[3];
+            char *colon_pos = strchr(server_info, ':');
+            if (colon_pos == NULL) {
+                fprintf(stderr, "Invalid server address format. Use server_address:port\n");
+                exit(1);
+            }
+            *colon_pos = '\0'; // Split the string
+            char *server_address = server_info;
+            int port_number = atoi(colon_pos + 1);
+
+            printf("Starting client to connect to %s:%d\n", server_address, port_number);
+            fflush(stdout);
+            deti_coins_client(server_address, port_number);
+        }
+        break;
+#endif
 #ifdef DETI_COINS_CPU_SPECIAL_SEARCH
       case '9':
         printf("searching for %u seconds using deti_coins_cpu_special_search()\n",seconds);
         fflush(stdout);
         deti_coins_cpu_special_search();
         break;
+#endif
+#ifdef DETI_COINS_SERVER_AVX2
+      case 'a':
+          if (argc != 3) {
+            fprintf(stderr, "Usage: %s -a [seconds]\n", argv[0]);
+            exit(1);
+          }
+          // command line option to run the server
+          // ./deti_coins -sa [seconds]
+            seconds = (unsigned int)atoi(argv[2]);
+            printf("Starting server for %u seconds using deti_coins_server_avx2()\n", seconds);
+            fflush(stdout);
+            deti_coins_server_avx2(seconds);
+            break;
+#endif
+#ifdef DETI_COINS_CLIENT_AVX2
+        case 'b':
+            if (argc != 4) {
+            fprintf(stderr, "Usage: %s -b [seconds] [server_address:port]\n", argv[0]);
+            exit(1);
+        }
+        seconds = (unsigned int)atoi(argv[2]);
+
+        // Parse server address and port
+        char *server_info = argv[3];
+        char *colon_pos = strchr(server_info, ':');
+        if (colon_pos == NULL) {
+            fprintf(stderr, "Invalid server address format. Use server_address:port\n");
+            exit(1);
+        }
+        *colon_pos = '\0'; // Split the string
+        char *server_address = server_info;
+        int port_number = atoi(colon_pos + 1);
+
+        printf("Starting client for %u seconds connecting to %s:%d using deti_coins_client_avx2()\n",
+              seconds, server_address, port_number);
+        fflush(stdout);
+        deti_coins_client_avx2(server_address, port_number, seconds);
+        break;
+#endif
+#ifdef DETI_COINS_CUDA_SEARCH
+      case 'c':
+        printf("searching for %u seconds using deti_coins_cuda_search()\n", seconds);
+        fflush(stdout);
+        deti_coins_cuda_search(n_random_words);
+        break;
+#endif
+#ifdef DETI_COINS_OPENCL_SEARCH
+        case 'd':
+          printf("searching for %u seconds using deti_coins_opencl_search()\n",seconds);
+          fflush(stdout);
+          deti_coins_opencl_search(n_random_words);
+          break;
 #endif
     }
     return 0;
@@ -249,9 +371,35 @@ int main(int argc,char **argv)
 #ifdef DETI_COINS_CUDA_SEARCH
   fprintf(stderr,"       %s -s4 [seconds] [n_random_words]   # search for DETI coins using CUDA\n",argv[0]);
 #endif
+#ifdef DETI_COINS_CPU_AVX_SIMD_OPENMP_SEARCH
+fprintf(stderr, "       %s -s5 [seconds] [n_random_words]   # search for DETI coins using AVX SIMD with OpenMP\n", argv[0]);
+#endif
+#ifdef DETI_COINS_CPU_AVX2_SIMD_OPENMP_SEARCH
+fprintf(stderr, "       %s -s6 [seconds] [n_random_words]   # search for DETI coins using AVX2 SIMD with OpenMP\n", argv[0]);
+#endif
+#ifdef DETI_COINS_CLIENT
+      fprintf(stderr,"       %s -s8 [seconds] [server_address:port]  # run client to connect to server\n", argv[0]);
+#endif
+#ifdef DETI_COINS_SERVER
+      fprintf(stderr,"       %s -s7 [seconds] [ignored]          # run server to search for DETI coins\n", argv[0]);
+#endif
 #ifdef DETI_COINS_CPU_SPECIAL_SEARCH
   fprintf(stderr,"       %s -s9 [seconds] [ignored]          # special search for DETI coins using md5_cpu()\n",argv[0]);
 #endif
+#ifdef DETI_COINS_SERVER_AVX2
+    fprintf(stderr,"       %s -sa                                # run server (AVX2)\n", argv[0]);
+#endif
+#ifdef DETI_COINS_CLIENT_AVX2
+    fprintf(stderr,"       %s -sb [seconds] [server_address:port]  # run client to connect to server (AVX2)\n", argv[0]);
+#endif
+#ifdef DETI_COINS_CUDA_SEARCH
+  fprintf(stderr, "       %s -sc [seconds] [n_random_words]   # search for DETI coins using CUDA\n", argv[0]);
+#endif
+#ifdef DETI_COINS_OPENCL_SEARCH
+  fprintf(stderr,"       %s -sd [seconds] [n_random_words]   # search for DETI coins using OPEN_CL\n",argv[0]);
+#endif
+
+
   fprintf(stderr,"                                           #   seconds is the amount of time spent in the search\n");
   fprintf(stderr,"                                           #   n_random_words is the number of 4-byte words to use\n");
   return 1;

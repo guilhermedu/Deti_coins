@@ -26,7 +26,6 @@ static u32_t random_printable_u32() {
 }
 
 static void deti_coins_cpu_avx_search(uint32_t n_random_words) {
-    u32_t n;
     u64_t n_attempts = 0, n_coins = 0;
     u32_t data[13][4] __attribute__((aligned(32)));
     u32_t hash[4][4];
@@ -87,28 +86,8 @@ static void deti_coins_cpu_avx_search(uint32_t n_random_words) {
         // Compute MD5 hashes for all lanes
         md5_cpu_avx((v4si *)data, (v4si *)hash);
 
-        // Process each lane separately
         for (int lane = 0; lane < 4; lane++) {
-            u32_t hash_lane[4];
-            // Extract the hash for the current lane
-            for (int i = 0; i < 4; i++) {
-                hash_lane[i] = hash[i][lane];
-            }
-
-            // Reverse bytes if necessary (depends on your `hash_byte_reverse` implementation)
-            hash_byte_reverse(hash_lane);
-
-            // Calculate the power of the coin
-            n = deti_coin_power(hash_lane);
-
-            if (n >= 30) {
-                printf("Number of trailing zeros: %d\n", n);
-                printf("Lane %d: %08X %08X %08X %08X\n", lane, hash_lane[0], hash_lane[1], hash_lane[2], hash_lane[3]);
-            }
-
-            // If the coin meets the criteria, save it
-            if (n >= 32u) {
-                // Save the coin data
+            if (hash[3][lane] == 0) {
                 for (int i = 0; i < 13; i++) {
                     coin[i] = data[i][lane];
                 }

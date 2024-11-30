@@ -47,8 +47,6 @@ static void deti_coins_cpu_search(void)
     // compute MD5 hash
     //
     md5_cpu(coin,hash);
-    
-    printf("hash: %08X %08X %08X %08X\n",hash[0],hash[1],hash[2],hash[3]);
     //
     // byte-reverse each word (that's how the MD5 message digest is printed...)
     //

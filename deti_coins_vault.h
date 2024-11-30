@@ -73,13 +73,7 @@ static void save_deti_coin(u32_t coin[13])
   //
   // compute MD5 hash
   //
-
   md5_cpu(coin,hash);
-
-  printf("Hash: %08X %08X %08X %08X\n", hash[0], hash[1], hash[2], hash[3]);
-
-
-  
   //
   // byte-reverse each word (that's how the MD5 message digest is printed...)
   //
@@ -88,7 +82,6 @@ static void save_deti_coin(u32_t coin[13])
   // count the number of trailing zeros of the MD5 hash
   //
   n = deti_coin_power(hash);
-  printf("Number of trailing zeros = %u\n",n);
   if(n < 32u)
   {
     fprintf(stderr,"save_deti_coin: number of zero bits (%u) is too small\n",n);
