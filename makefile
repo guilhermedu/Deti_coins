@@ -53,6 +53,8 @@ clean:
 	rm -f deti_coins.html deti_coins.js deti_coins.wasm
 	rm -f deti_coins_opencl_search
 	rm -f deti_coins_opencl_kernel.bin deti_coins_opencl_search.bin
+	rm -f deti_coins_intel_avx_simd
+	rm -f deti_coins_intel_avx2_simd
 
 
 #
@@ -60,6 +62,12 @@ clean:
 #
 deti_coins_intel: $(SRC) $(H_FILES)
 	cc $(BASE_CFLAGS) -DUSE_CUDA=0 $(SRC) -o deti_coins_intel
+
+deti_coins_intel_avx_simd: $(SRC) $(H_FILES)
+	cc $(BASE_CFLAGS) -DDETI_COINS_CPU_AVX_SIMD -DUSE_CUDA=0 $(SRC) -o deti_coins_intel_avx_simd
+
+deti_coins_intel_avx2_simd: $(SRC) $(H_FILES)
+	cc $(BASE_CFLAGS) -DDETI_COINS_CPU_AVX2_SIMD -DUSE_CUDA=0 $(SRC) -o deti_coins_intel_avx2_simd
 
 #
 # Compile for Intel/AMD processors with OpenMP support
@@ -115,3 +123,6 @@ deti_coins_opencl_kernel.bin: md5.h deti_coins_opencl_kernel.cl
 deti_coins_opencl_search: $(SRC) $(H_FILES) deti_coins_opencl_kernel.bin
 	cc -Wall -O2 -DUSE_OPENCL=1 -DDETI_COINS_OPENCL_SEARCH $(SRC) -o deti_coins_opencl_search -lOpenCL
 
+
+webAssembly: $(SRC) $(H_FILES)
+	emcc -Wall -O2 $(SRC) -o deti_coins.c --emrun

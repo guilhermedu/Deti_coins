@@ -1,5 +1,5 @@
-#ifndef DETI_COINS_CPU_AVX2_SEARCH
-#define DETI_COINS_CPU_AVX2_SEARCH
+#ifndef DETI_COINS_CPU_AVX2_SIMD_H
+#define DETI_COINS_CPU_AVX2_SIMD_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -57,7 +57,7 @@ static inline __m256i xorshift32_avx2(__m256i *state) {
 }
 
 // Function to generate eight u32_t values with printable ASCII characters using AVX2
-static void random_printable_u32_avx2(u32_t *v, __m256i *state) {
+static void random_printable_u32_avx2_simd(u32_t *v, __m256i *state) {
     __m256i rand_nums = xorshift32_avx2(state);
 
     // Split the 256-bit vector into two 128-bit vectors
@@ -87,7 +87,7 @@ static void random_printable_u32_avx2(u32_t *v, __m256i *state) {
     _mm256_storeu_si256((__m256i *)v, ascii_chars_packed);
 }
 
-static void deti_coins_cpu_avx2_search(uint32_t n_random_words) {
+static void deti_coins_cpu_avx2_search_simd(uint32_t n_random_words) {
     u64_t n_attempts = 0, n_coins = 0;
     u32_t data[13][NUM_LANES] __attribute__((aligned(32)));
     u32_t hash[4][NUM_LANES];
@@ -116,10 +116,10 @@ static void deti_coins_cpu_avx2_search(uint32_t n_random_words) {
     // Main loop to find DETI coins
     for (n_attempts = n_coins = 0ul; stop_request == 0; n_attempts += NUM_LANES) {
         // Generate random values for v1, v2, v3, v4 using their respective PRNG states
-        random_printable_u32_avx2(v1, &xorshift32_state[0]);
-        random_printable_u32_avx2(v2, &xorshift32_state[1]);
-        random_printable_u32_avx2(v3, &xorshift32_state[2]);
-        random_printable_u32_avx2(v4, &xorshift32_state[3]);
+        random_printable_u32_avx2_simd(v1, &xorshift32_state[0]);
+        random_printable_u32_avx2_simd(v2, &xorshift32_state[1]);
+        random_printable_u32_avx2_simd(v3, &xorshift32_state[2]);
+        random_printable_u32_avx2_simd(v4, &xorshift32_state[3]);
 
         // Update data arrays for each lane
         for (int i = 0; i < NUM_LANES; i++) {

@@ -149,6 +149,12 @@ static void alarm_signal_handler(int dummy)
 //#if USE_CUDA > 0
 //# include "deti_coins_cuda_search.h"
 //#endif
+#ifdef DETI_COINS_CPU_AVX_SIMD
+# include "deti_coins_cpu_avx_search_SIMD.h"
+#endif
+#ifdef DETI_COINS_CPU_AVX2_SIMD
+# include "deti_coins_cpu_avx2_search_SIMD.h"
+#endif
 #ifdef DETI_COINS_SERVER
 # include "deti_coins_server.h"
 #endif
@@ -340,18 +346,25 @@ int main(int argc,char **argv)
         deti_coins_client_avx2(server_address, port_number, seconds);
         break;
 #endif
-#ifdef DETI_COINS_CUDA_SEARCH
-      case 'c':
-        printf("searching for %u seconds using deti_coins_cuda_search()\n", seconds);
-        fflush(stdout);
-        deti_coins_cuda_search(n_random_words);
-        break;
-#endif
 #ifdef DETI_COINS_OPENCL_SEARCH
         case 'd':
           printf("searching for %u seconds using deti_coins_opencl_search()\n",seconds);
           fflush(stdout);
           deti_coins_opencl_search(n_random_words);
+          break;
+#endif
+#ifdef DETI_COINS_CPU_AVX_SIMD
+        case 'e':
+          printf("searching for %u seconds using deti_coins_cpu_avx_simd()\n",seconds);
+          fflush(stdout);
+          deti_coins_cpu_avx_search_simd(n_random_words);
+          break;
+#endif
+#ifdef DETI_COINS_CPU_AVX2_SIMD
+        case 'f':
+          printf("searching for %u seconds using deti_coins_cpu_avx2_simd()\n",seconds);
+          fflush(stdout);
+          deti_coins_cpu_avx2_search_simd(n_random_words);
           break;
 #endif
     }
@@ -392,11 +405,14 @@ fprintf(stderr, "       %s -s6 [seconds] [n_random_words]   # search for DETI co
 #ifdef DETI_COINS_CLIENT_AVX2
     fprintf(stderr,"       %s -sb [seconds] [server_address:port]  # run client to connect to server (AVX2)\n", argv[0]);
 #endif
-#ifdef DETI_COINS_CUDA_SEARCH
-  fprintf(stderr, "       %s -sc [seconds] [n_random_words]   # search for DETI coins using CUDA\n", argv[0]);
-#endif
 #ifdef DETI_COINS_OPENCL_SEARCH
   fprintf(stderr,"       %s -sd [seconds] [n_random_words]   # search for DETI coins using OPEN_CL\n",argv[0]);
+#endif
+#ifdef DETI_COINS_CPU_AVX_SIMD
+  fprintf(stderr,"       %s -se [seconds] [n_random_words]   # search for DETI coins using AVX SIMD\n",argv[0]);
+#endif
+#ifdef DETI_COINS_CPU_AVX2_SIMD
+  fprintf(stderr,"       %s -sf [seconds] [n_random_words]   # search for DETI coins using AVX2 SIMD\n",argv[0]);
 #endif
 
 
