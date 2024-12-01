@@ -77,15 +77,15 @@ make deti_coins_client
 make deti_coins_server_avx2
 ```
 ```
-./deti_coins_server -sa 180
+./deti_coins_server_avx2 -sa 180
 ```
 
 ## AVX2 Client
 ```
-make deti_coins_client
+make deti_coins_client_avx2
 ```
 ```
-./deti_coins_client -sb 180 127.0.0.1:5000
+./deti_coins_client_avx2 -sb 180 127.0.0.1:5000
 ```
 
 ## Web Assembly

@@ -282,6 +282,7 @@ int main(int argc,char **argv)
             fprintf(stderr, "Usage: %s -s8 [seconds] [server_address:port]\n", argv[0]);
             exit(1);
         }
+        seconds = (unsigned int)atoi(argv[2]);
         {
             // Parse server address and port
             char *server_info = argv[3];
@@ -294,9 +295,10 @@ int main(int argc,char **argv)
             char *server_address = server_info;
             int port_number = atoi(colon_pos + 1);
 
-            printf("Starting client to connect to %s:%d\n", server_address, port_number);
+            printf("Starting client for %u seconds connecting to %s:%d using deti_coins_client()\n",
+              seconds, server_address, port_number);
             fflush(stdout);
-            deti_coins_client(server_address, port_number);
+            deti_coins_client(server_address, port_number, seconds);
         }
         break;
 #endif
