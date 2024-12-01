@@ -125,4 +125,4 @@ deti_coins_opencl_search: $(SRC) $(H_FILES) deti_coins_opencl_kernel.bin
 
 
 webAssembly: $(SRC) $(H_FILES)
-	emcc -Wall -O2 $(SRC) -o deti_coins.c --emrun
+	emcc -Wall -O2 $(SRC) -o deti_coins.html --emrun
